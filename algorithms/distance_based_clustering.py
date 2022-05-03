@@ -29,8 +29,12 @@ class DistanceBasedClustering(BaseClustering):
         pass
 
 
-    def fit(self, data):
-        self.centers = self.initialize_cluster_centers(data)
+    def fit(self, data, initial_centers=None):
+        if initial_centers is None:
+            self.centers = self.initialize_cluster_centers(data)
+        else:
+            self.centers = initial_centers
+
         iteration = 0
         has_converged = False
 

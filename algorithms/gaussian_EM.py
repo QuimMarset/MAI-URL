@@ -12,16 +12,22 @@ class GaussianEM(BaseClustering):
         self.prev_log_likelihood = np.inf
 
 
-    def init_gaussian_parameters(self, data):
+    def init_gaussian_parameters(self, data, initial_mus):
         num_dimensions = data.shape[1]
         # Regularization factor to avoid singular covariance matrices
         self.reg_cov = 1e-6*np.identity(num_dimensions)
+
         # Mus for each gaussian
-        self.mus = self.initialize_cluster_centers(data)
+        if initial_mus is None:
+            self.mus = self.initialize_cluster_centers(data)
+        else:
+            self.mus = initial_mus
+
         # Symmetric covariance matrices
         self.cov_matrices = np.zeros((self.num_clusters, num_dimensions, num_dimensions))
         for index in self.num_clusters:
             np.fill_diagonal(self.cov_matrices[index], self.cov_init_value)
+
         # Cluster prior (i.e. probability of a random point to belong to a cluster)
         self.pis = np.ones(self.num_clusters) / self.number_of_sources
 
@@ -71,8 +77,8 @@ class GaussianEM(BaseClustering):
         return change < self.threshold
 
 
-    def fit(self, data):
-        self.init_gaussian_parameters(data)
+    def fit(self, data, initial_centers=None):
+        self.init_gaussian_parameters(data, initial_centers)
         iteration = 0
         has_converged = False
 
