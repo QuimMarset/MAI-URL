@@ -10,6 +10,7 @@ class Hybrid1(KHarmonicMeans):
         membership[np.arange(self.num_clusters), np.argmin(distances, axis=0)] = 1
         return membership
 
+
     def compute_data_weights(self, distances):
         numerator = np.sum(distances ** (-self.p - 2), axis=0)
         denominator = np.sum(distances ** (-self.p)) ** 2
@@ -22,6 +23,7 @@ class Hybrid2(KHarmonicMeans):
         numerator = distances ** (-self.p - 2)
         denominator = np.sum(numerator, axis=0)
         return numerator / denominator
+
 
     def compute_data_weights(self, distances):
         return np.ones(distances.shape[1])

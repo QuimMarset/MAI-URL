@@ -4,19 +4,28 @@ from algorithms.base_clustering import BaseClustering
 
 class KHarmonicMeans(BaseClustering):
 
-    def __init__(self, num_clusters, max_iterations, p, repetitions, is_forgy_initialization):
+    def __init__(self, num_clusters, max_iterations, p, threshold, repetitions, is_forgy_initialization):
         super().__init__(num_clusters, max_iterations, repetitions, is_forgy_initialization)
         self.p = p
+        self.threshold = threshold
+        self.repetitions = repetitions
+
 
     def compute_cluster_membership(self, distances):
         numerator = distances ** (-self.p - 2)
         denominator = np.sum(numerator, axis=0)
         return numerator / denominator
 
+
     def compute_data_weights(self, distances):
         numerator = np.sum(distances ** (-self.p - 2), axis=0)
         denominator = np.sum(distances ** (-self.p)) ** 2
         return numerator / denominator
+
+
+    def has_converged(self, centers, old_centers):
+        return np.sum(np.linalg.norm(centers - old_centers)) <= self.threshold
+
 
     def compute_objective_function(self, distances):
         inverted_distances = 1.0 / (distances ** self.p)
