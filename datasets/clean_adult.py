@@ -11,7 +11,7 @@ def read_dataset(dataset_path):
 
 
 def normalize_numeric_features(numeric_features):
-    standard_scaler = preprocessing.StandardScaler()
+    standard_scaler = preprocessing.StandardSMcaler()
     scaled_numeric_features = standard_scaler.fit_transform(numeric_features)
     scaled_numeric_features = pd.DataFrame(scaled_numeric_features, columns=numeric_features.columns)
     return scaled_numeric_features

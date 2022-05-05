@@ -82,7 +82,7 @@ def plot_algorithms_ratio_quality_comparison(ratios, algorithm_names, dataset_na
 
 
 
-def plot_k_optimization(dataset_name, k_values, metric_values, PCA_f = False, path=PATH_PLOTS):
+def plot_k_optimization(dataset_name, k_values, metric_values, PCA_f, path):
     plt.figure()
     plt.plot(k_values, metric_values)
     plt.xlabel('K')
@@ -101,10 +101,9 @@ def plot_k_optimization(dataset_name, k_values, metric_values, PCA_f = False, pa
     plt.close()
 
 
-def plot_explained_variance(explained_variance_ratios, dataset_name, PCA_name, path=PATH_PLOTS):
+def plot_pca_explained_variance(explained_variance_ratios, dataset_name, save_path):
     cumulative = np.cumsum(explained_variance_ratios)
     components = range(len(explained_variance_ratios))
-    PCA_name_file_name = PCA_name.replace(' ', '-')
 
     comp_90 = [index for index in range(len(cumulative)) if cumulative[index] >= 0.9][0]
     ratio_90 = cumulative[comp_90]
@@ -117,7 +116,7 @@ def plot_explained_variance(explained_variance_ratios, dataset_name, PCA_name, p
     plt.xlabel('PC index')
     plt.yticks(np.arange(0, 1.1, 0.1))
     plt.legend()
-    plt.title(f'PCs explained variance of {PCA_name} on {dataset_name} dataset')
+    plt.title(f'PCA PCs explained variance on {dataset_name} dataset')
     plt.tight_layout()
-    plt.savefig( f'{path}explained_variance_{PCA_name_file_name}_{dataset_name}.png')
+    plt.savefig(os.path.join(save_path, f'explained_variance_{dataset_name}.jpg'))
     plt.close()

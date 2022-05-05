@@ -3,11 +3,13 @@ from sklearn.metrics import silhouette_score
 from sklearn.cluster import KMeans
 from algorithms.k_harmonic_means import KHarmonicMeans
 from datasets.clean_adult import preprocess_adult
-from utils.plot_utils import plot_clustering, plot_explained_variance, plot_k_optimization
+from utils.plot_utils import plot_k_optimization, plot_pca_explained_variance, plot_clustering
 from metrics import evaluate_resulting_clusters
 from constants import ADULT, KHARMONIC
 from cluster_initialization import *
 
+
+save_path = './results/experiment_4'
 
 optimal_adult_pcs = 23
 min_k = 2
@@ -22,12 +24,6 @@ threshold = 0.001
 optimal_k_sklearn_kmeans = 4
 optimal_k_kharmonic = 4
 
-
-def plot_pca_explained_variance(data):
-    pca = PCA()
-    pca.fit(data)
-    explained_variances = pca.explained_variance_ratio_
-    plot_explained_variance(explained_variances)
 
 
 def run_sklearn_kmeans(data, num_clusters, iterations, repetitions):
@@ -82,10 +78,15 @@ def run_algorithms_with_optimal_k(data, true_clustering, save_path):
 
 
 def perform_experiment_4():
-    adult_data, true_clustering = preprocess_adult('./dataset/adult.arff')
-    plot_pca_explained_variance(adult_data)
+    adult_data, true_clustering = preprocess_adult('./datasets/adult.arff')
+    
+    pca = PCA()
+    pca.fit(adult_data)
+    plot_pca_explained_variance(pca.explained_variance_ratio_, ADULT, save_path)
 
     pca = PCA(optimal_adult_pcs)
     reduced_data = pca.fit_transform(adult_data)
 
-    optimize_algorithms_number_of_clusters(reduced_data)
+    search_optimal_number_of_clusters(adult_data, min_k, max_k, save_path)
+
+    run_algorithms_with_optimal_k(adult_data, true_clustering, save_path)
