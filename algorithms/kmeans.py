@@ -4,20 +4,20 @@ from algorithms.distance_based_clustering import DistanceBasedClustering
 
 class KMeans(DistanceBasedClustering):
 
-    def __init__(self, num_clusters, max_iterations, repetitions, is_forgy_initialization):
-        super().__init__(num_clusters, max_iterations, is_forgy_initialization)
+    def __init__(self, num_clusters, max_iterations, repetitions):
+        super().__init__(num_clusters, max_iterations)
         self.repetitions = repetitions
 
 
     def compute_cluster_membership(self, distances):
-        num_points = distances.shape[1]
-        membership = np.zeros((self.num_clusters, num_points))
-        membership[np.arange(self.num_clusters), np.argmin(distances, axis=0)] = 1
+        num_points = distances.shape[0]
+        membership = np.zeros_like(distances)
+        membership[np.arange(num_points), np.argmin(distances, axis=1)] = 1
         return membership
 
 
     def compute_data_weights(self, distances):
-        return np.ones(distances.shape[1])
+        return np.ones(distances.shape[0])
 
 
     def has_converged(self, centers, old_centers):

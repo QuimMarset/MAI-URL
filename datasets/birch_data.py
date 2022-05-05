@@ -7,9 +7,9 @@ import matplotlib.colors as plt_colors
 from sklearn.preprocessing import StandardScaler
 
 
-def generate_birch_data(grid_size=10, start_coodinate=30, points_per_cluster=100):
-    xs = np.linspace(-start_coodinate, start_coodinate, grid_size)
-    ys = np.linspace(-start_coodinate, start_coodinate, grid_size)
+def generate_birch_data(grid_size=10, center_distance=4*np.sqrt(2), points_per_cluster=100):
+    xs = [i*center_distance for i in range(grid_size)]
+    ys = [i*center_distance for i in range(grid_size)]
     xs, ys = np.meshgrid(xs, ys)
     cluster_centers = np.hstack((np.expand_dims(np.ravel(xs), axis=-1), np.expand_dims(np.ravel(ys), axis=-1)))
 
@@ -42,8 +42,3 @@ def plot_data(data, labels, cluster_centers):
 
     plt.scatter(cluster_centers[:, 0], cluster_centers[:, 1], color='black', marker='x')
     plt.show()
-
-
-if __name__ == '__main__':
-    data, labels, cluster_centers = generate_birch_data()
-    plot_data(data, labels, cluster_centers)

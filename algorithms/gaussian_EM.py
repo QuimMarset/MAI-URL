@@ -5,11 +5,10 @@ from algorithms.base_clustering import BaseClustering
 
 class GaussianEM(BaseClustering):
 
-    def __init__(self, num_clusters, max_iterations, threshold, is_forgy_initialization, cov_init_value):
-        super().__init__(num_clusters, max_iterations, is_forgy_initialization)
+    def __init__(self, num_clusters, max_iterations, threshold, cov_init_value):
+        super().__init__(num_clusters, max_iterations)
         self.threshold = threshold
         self.cov_init_value = cov_init_value
-        self.prev_log_likelihood = np.inf
 
 
     def init_gaussian_parameters(self, data, initial_mus):
@@ -77,7 +76,8 @@ class GaussianEM(BaseClustering):
         return change < self.threshold
 
 
-    def fit(self, data, initial_centers=None):
+    def fit(self, data, initial_centers):
+        self.prev_log_likelihood = np.inf
         self.init_gaussian_parameters(data, initial_centers)
         iteration = 0
         has_converged = False

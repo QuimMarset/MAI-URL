@@ -1,25 +1,39 @@
+from math import dist
 import numpy as np
-from algorithms.base_clustering import BaseClustering
+from algorithms.distance_based_clustering import DistanceBasedClustering
 
 
-class KHarmonicMeans(BaseClustering):
+class KHarmonicMeans(DistanceBasedClustering):
 
-    def __init__(self, num_clusters, max_iterations, p, threshold, repetitions, is_forgy_initialization):
-        super().__init__(num_clusters, max_iterations, repetitions, is_forgy_initialization)
+    def __init__(self, num_clusters, max_iterations, p, threshold, repetitions):
+        super().__init__(num_clusters, max_iterations)
         self.p = p
         self.threshold = threshold
         self.repetitions = repetitions
 
 
     def compute_cluster_membership(self, distances):
-        numerator = distances ** (-self.p - 2)
-        denominator = np.sum(numerator, axis=0)
-        return numerator / denominator
+        exp_distances = distances ** (self.p + 2)
+        norm_factor = np.sum(exp_distances, axis=1)
+        norm_factor[norm_factor == 0] += 1e-8
+        pre_inverse = exp_distances / np.expand_dims(norm_factor, axis=-1)
+        pre_inverse[pre_inverse == 0] += 1e-8
+        membership = 1 / pre_inverse
+        membership = membership / np.sum(membership, axis=1)[:, np.newaxis]
+        return membership
 
 
     def compute_data_weights(self, distances):
-        numerator = np.sum(distances ** (-self.p - 2), axis=0)
-        denominator = np.sum(distances ** (-self.p)) ** 2
+        exp_distances = distances ** (self.p + 2)
+        exp_distances[exp_distances == 0] += 1e-8
+        inverse_num = 1 / exp_distances
+        numerator = np.sum(inverse_num, axis=1)
+
+        exp_distances_2 = distances ** (self.p)
+        exp_distances_2[exp_distances_2 == 0] += 1e-8
+        inverse_den = 1 / exp_distances_2
+        denominator = np.sum(inverse_den, axis=1) ** 2
+
         return numerator / denominator
 
 
@@ -28,6 +42,7 @@ class KHarmonicMeans(BaseClustering):
 
 
     def compute_objective_function(self, distances):
+        distances[distances == 0] += 1e-8
         inverted_distances = 1.0 / (distances ** self.p)
-        denominators = np.sum(inverted_distances, axis=0)
-        return np.sum(self.num_clusters / denominators)
+        denominator = np.sum(inverted_distances, axis=1)
+        return np.sum(self.num_clusters / denominator)
