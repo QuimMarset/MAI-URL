@@ -7,9 +7,8 @@ from algorithms.distance_based_clustering import DistanceBasedClustering
 class FuzzyCMeans(DistanceBasedClustering):
 
     def __init__(self, num_clusters, max_iterations, fuzzy_degree, threshold, repetitions):
-        super().__init__(num_clusters, max_iterations)
+        super().__init__(num_clusters, max_iterations, repetitions)
         self.fuzzy_degree = fuzzy_degree
-        self.repetitions = repetitions
         self.threshold = threshold
 
 

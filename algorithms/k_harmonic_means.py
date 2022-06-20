@@ -1,4 +1,3 @@
-from math import dist
 import numpy as np
 from algorithms.distance_based_clustering import DistanceBasedClustering
 
@@ -6,10 +5,9 @@ from algorithms.distance_based_clustering import DistanceBasedClustering
 class KHarmonicMeans(DistanceBasedClustering):
 
     def __init__(self, num_clusters, max_iterations, p, threshold, repetitions):
-        super().__init__(num_clusters, max_iterations)
+        super().__init__(num_clusters, max_iterations, repetitions)
         self.p = p
         self.threshold = threshold
-        self.repetitions = repetitions
 
 
     def compute_cluster_membership(self, distances):

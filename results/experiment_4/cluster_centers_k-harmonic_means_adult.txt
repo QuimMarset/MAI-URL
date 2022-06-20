@@ -1,0 +1,28 @@
+Center 0:
+  age: 38.690255344240114
+  education-num: 10.080002505798182
+  capital-gain: 583.1851903482006
+  capital-loss: 87.55278654852435
+  hours-per-week: 40.44175675922231
+  workclass: Private
+  marital-status: Married-civ-spouse
+  occupation: Prof-specialty
+  relationship: Husband
+  race: White
+  native-country: United-States
+  sex: 0.3305375979367682
+
+Center 1:
+  age: 38.596890907572224
+  education-num: 10.07617308008516
+  capital-gain: 581.6326273045329
+  capital-loss: 87.45067444325885
+  hours-per-week: 40.403003102378484
+  workclass: Private
+  marital-status: Married-civ-spouse
+  occupation: Prof-specialty
+  relationship: Husband
+  race: White
+  native-country: United-States
+  sex: 0.3324969840276775
+

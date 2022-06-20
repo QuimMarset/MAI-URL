@@ -1,0 +1,19 @@
+Internal Metrics:
+
+Davies&Bouldin Score: 2.33
+Silhouette Coefficient: 0.14
+Calinski-Harabasz Score: 7340.97
+
+External Metrics:
+
+Confusion Matrix(accuracy): 0.56
+Confusion Matrix(precision): 0.70
+Confusion Matrix(recall): 0.55
+Confusion Matrix(f1-score): 0.61
+Purity: 0.76
+AdjustedRand Index: 0.12
+Fowlkes Mallows: 0.62
+Adjusted Mutual Information: 0.18
+Completeness Score: 0.16
+Homogeneity Score: 0.20
+V-Measure Score: 0.18
